@@ -22,36 +22,31 @@ flutter_test	SDK	Framework de pruebas
 flutter_launcher_icons	0.13.1	Generador de iconos de la aplicación
 flutter_lints	6.0.0	Reglas de linting para Dart
 📁 Estructura del proyecto
+```text
 exchangerate/
-├── android/ # Configuración plataforma Android
+├── android/                # Configuración nativa Android
 ├── assets/
-│ └── icons/
-│ └── sflogo.png # Logo/icono de la aplicación
-├── ios/ # Configuración plataforma iOS
-├── lib/ # Código fuente principal (Dart)
-│ ├── main.dart # Punto de entrada de la aplicación
-│ ├── core/
-│ │ ├── app_colors.dart # Paleta de colores constantes
-│ │ └── app_theme.dart # Configuración del tema Material 3
-│ ├── models/
-│ │ └── dolar_model.dart # Modelo de datos para las tasas de cambio
-│ ├── molecules/
-│ │ ├── calculator_widget.dart # Widget de la calculadora de divisas
-│ │ ├── power_quote_widget.dart # Widget de frases motivadoras
-│ │ └── rate_card.dart # Tarjeta de visualización de tasas
-│ └── pages/
-│ ├── home_page.dart # Pantalla principal con tasas y calculadora
-│ └── loading_page.dart # Pantalla de carga/splash con fetch de API
-├── linux/ # Configuración plataforma Linux
-├── macos/ # Configuración plataforma macOS
-├── web/ # Configuración plataforma Web
-├── windows/ # Configuración plataforma Windows
-├── test/ # Directorio de pruebas
-├── pubspec.yaml # Dependencias y configuración del proyecto
-└── analysis_options.yaml # Reglas del analizador Dart
-
-text
-
+│   └── icons/
+│       └── sflogo.png      # Logo de la aplicación
+├── ios/                    # Configuración nativa iOS
+├── lib/                    # Código fuente (Dart)
+│   ├── main.dart           # Punto de entrada
+│   ├── core/
+│   │   ├── app_colors.dart # Colores del sistema
+│   │   └── app_theme.dart  # Configuración Material 3
+│   ├── models/
+│   │   └── dolar_model.dart# Lógica de datos
+│   ├── molecules/
+│   │   ├── calculator_widget.dart
+│   │   ├── power_quote_widget.dart
+│   │   └── rate_card.dart
+│   └── pages/
+│       ├── home_page.dart
+│       └── loading_page.dart
+├── test/                   # Pruebas unitarias/widgets
+├── pubspec.yaml            # Dependencias y assets
+└── analysis_options.yaml   # Reglas de calidad de código
+```
 
 ---
 
