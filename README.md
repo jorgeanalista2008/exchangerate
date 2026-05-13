@@ -1,13 +1,14 @@
-💱 ExchangeRate
-Aplicación móvil multiplataforma desarrollada en Flutter para el seguimiento en tiempo real de las tasas de cambio del dólar en Venezuela (USD/Bs.). Consulta automáticamente las cotizaciones oficial y paralela e incluye una calculadora de divisas integrada con una interfaz moderna basada en Material Design 3.
+# 💱 ExchangeRate - Monitor de Divisas
+
+ExchangeRate es una solución móvil multiplataforma desarrollada con **Flutter** para el seguimiento preciso y en tiempo real de las tasas de cambio (USD/VES) en Venezuela. La aplicación centraliza datos de fuentes oficiales y paralelas, ofreciendo una experiencia de usuario fluida mediante animaciones avanzadas y una calculadora integrada.
 
 ✨ Características principales
-Tasas de cambio en tiempo real: Visualiza la cotización oficial y paralela (USDT) del dólar frente al bolívar venezolano, actualizadas desde la API de DolarAPI.
-Calculadora de divisas: Convierte entre dólares estadounidenses y bolívares de forma instantánea, con la opción de alternar entre la tasa oficial y la paralela.
-Pantalla de carga animada: Splash screen con transiciones fluidas, gradientes y animaciones que se muestra mientras se obtienen los datos de la API.
-Frases motivadoras: Widget interactivo que muestra citas de "Las 48 Leyes del Poder" de Robert Greene, con animación al cambiar entre ellas.
-Diseño Material 3: Interfaz moderna con paleta de colores personalizada, tarjetas con sombras, bordes redondeados y tipografía consistente.
-Multiplataforma: Compatible con Android, iOS, Web, Linux, macOS y Windows gracias a Flutter.
+*   **Sincronización en tiempo real:** Integración con `DolarAPI` para obtener cotizaciones actualizadas (BCV y Paralelo).
+*   **Calculadora Dual Dinámica:** Conversión instantánea entre USD y VES con capacidad de conmutación de tasa y sentido de conversión (Swap).
+*   **UX/UI Premium:** Interfaz basada en **Material Design 3** con paleta de colores personalizada, gradientes y componentes visuales reactivos.
+*   **Sistema de Animaciones:** Implementación de `FadeTransition`, `ScaleTransition` y `RotationTransition` para una navegación fluida.
+*   **Widget Inspiracional:** Componente interactivo que gestiona estados locales para mostrar citas dinámicas de "Las 48 Leyes del Poder".
+
 📸 Capturas de pantalla
 Pendiente de agregar capturas de pantalla de la aplicación en funcionamiento.
 
