@@ -9,13 +9,6 @@ ExchangeRate es una solución móvil multiplataforma desarrollada con **Flutter*
 *   **Sistema de Animaciones:** Implementación de `FadeTransition`, `ScaleTransition` y `RotationTransition` para una navegación fluida.
 *   **Widget Inspiracional:** Componente interactivo que gestiona estados locales para mostrar citas dinámicas de "Las 48 Leyes del Poder".
 
-📸 Capturas de pantalla
-<img width="200" height="600" alt="Gemini_Generated_Image_gr4ot1gr4ot1gr4o" src="https://github.com/user-attachments/assets/85094c91-987f-43b9-b5bd-4eb8d5794b58" />
-<img width="200" height="600" alt="Gemini_Generated_Image_17it0u17it0u17it" src="https://github.com/user-attachments/assets/3e9acb2d-e54b-4737-9fa4-afaa0fbe2e10" />
-
-
-
-
 
 🛠️ Tecnologías y dependencias
 Tecnología	Versión	Descripción
