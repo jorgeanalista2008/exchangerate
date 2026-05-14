@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../core/app_colors.dart';
+import '../core/theme_provider.dart';
 
 class PowerQuoteWidget extends StatefulWidget {
   const PowerQuoteWidget({super.key});
@@ -76,7 +78,7 @@ class _PowerQuoteWidgetState extends State<PowerQuoteWidget>
     
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 400),
     );
 
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -90,6 +92,7 @@ class _PowerQuoteWidgetState extends State<PowerQuoteWidget>
   }
 
   void _nextLaw() {
+    // Efecto de vibración o feedback táctil
     _animationController.reverse().then((_) {
       setState(() {
         int newIndex;
@@ -111,28 +114,45 @@ class _PowerQuoteWidgetState extends State<PowerQuoteWidget>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Provider.of<ThemeProvider>(context).isDarkMode;
+    final textPrimary = isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary;
+    final textSecondary = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+    
     return GestureDetector(
       onTap: _nextLaw,
-      child: FadeTransition(
-        opacity: _fadeAnimation,
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                AppColors.primaryColor.withOpacity(0.1),
-                AppColors.secondaryColor.withOpacity(0.05),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: AppColors.primaryColor.withOpacity(0.2),
-              width: 1,
-            ),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        width: double.infinity,
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: isDark
+                ? [
+                    AppColors.primaryColor.withOpacity(0.15),
+                    AppColors.secondaryColor.withOpacity(0.05),
+                  ]
+                : [
+                    AppColors.primaryColor.withOpacity(0.08),
+                    AppColors.secondaryColor.withOpacity(0.03),
+                  ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: AppColors.primaryColor.withOpacity(isDark ? 0.3 : 0.15),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primaryColor.withOpacity(isDark ? 0.1 : 0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: FadeTransition(
+          opacity: _fadeAnimation,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -140,36 +160,41 @@ class _PowerQuoteWidgetState extends State<PowerQuoteWidget>
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(6),
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryColor.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(8),
+                      color: AppColors.primaryColor.withOpacity(isDark ? 0.2 : 0.12),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(
                       Icons.auto_awesome,
-                      color: AppColors.primaryColor,
-                      size: 18,
+                      color: isDark ? const Color(0xFF4DB6AC) : AppColors.primaryColor,
+                      size: 20,
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  const Expanded(
+                  const SizedBox(width: 12),
+                  Expanded(
                     child: Text(
                       "Las 48 Leyes del Poder",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: AppColors.textPrimary,
+                        fontSize: 15,
+                        color: textPrimary,
                       ),
                     ),
                   ),
+                  // Badge de número de ley
                   Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
+                      horizontal: 10,
+                      vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      color: AppColors.primaryColor.withOpacity(isDark ? 0.2 : 0.1),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: AppColors.primaryColor.withOpacity(0.2),
+                        width: 1,
+                      ),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -177,16 +202,16 @@ class _PowerQuoteWidgetState extends State<PowerQuoteWidget>
                         Text(
                           "Ley ${_currentLawIndex + 1}",
                           style: TextStyle(
-                            fontSize: 11,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primaryColor,
+                            color: isDark ? const Color(0xFF4DB6AC) : AppColors.primaryColor,
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: 6),
                         Icon(
-                          Icons.touch_app,
+                          Icons.shuffle,
                           size: 14,
-                          color: AppColors.primaryColor.withOpacity(0.6),
+                          color: isDark ? const Color(0xFF4DB6AC) : AppColors.primaryColor,
                         ),
                       ],
                     ),
@@ -194,36 +219,74 @@ class _PowerQuoteWidgetState extends State<PowerQuoteWidget>
                 ],
               ),
               
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
               
-              // Ley actual
-              Text(
-                '"${laws[_currentLawIndex]}"',
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontStyle: FontStyle.italic,
-                  color: AppColors.textSecondary,
-                  height: 1.4,
+              // Línea decorativa
+              Container(
+                height: 1,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors.primaryColor.withOpacity(0.0),
+                      AppColors.primaryColor.withOpacity(isDark ? 0.3 : 0.15),
+                      AppColors.primaryColor.withOpacity(0.0),
+                    ],
+                  ),
                 ),
               ),
               
-              const SizedBox(height: 10),
+              const SizedBox(height: 14),
               
-              // Indicador
+              // Ley actual con comillas decorativas
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '"',
+                    style: TextStyle(
+                      fontSize: 40,
+                      color: AppColors.primaryColor.withOpacity(0.5),
+                      height: 1,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        laws[_currentLawIndex],
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontStyle: FontStyle.italic,
+                          color: textSecondary,
+                          height: 1.5,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              
+              const SizedBox(height: 12),
+              
+              // Indicador de interacción
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
-                    Icons.tap_and_play,
-                    size: 14,
-                    color: Colors.grey[400],
+                    Icons.touch_app_outlined,
+                    size: 13,
+                    color: isDark ? Colors.grey[500] : Colors.grey[400],
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: 5),
                   Text(
-                    "Toca para cambiar",
+                    "Toca para descubrir otra ley",
                     style: TextStyle(
                       fontSize: 11,
-                      color: Colors.grey[400],
+                      color: isDark ? Colors.grey[500] : Colors.grey[400],
+                      letterSpacing: 0.3,
                     ),
                   ),
                 ],

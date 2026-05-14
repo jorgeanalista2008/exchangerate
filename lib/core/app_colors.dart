@@ -1,32 +1,36 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Colores principales
-  static const primaryColor = Color(0xFF009688); // Verde Esmeralda
-  static const secondaryColor = Color(0xFF004D40); // Verde oscuro
-  static const accentColor = Color(0xFFE0F2F1); // Verde claro
+  // Colores principales - Modo Claro
+  static const primaryColor = Color(0xFF009688);
+  static const secondaryColor = Color(0xFF004D40);
+  static const accentColor = Color(0xFFE0F2F1);
   
-  // Fondos
-  static const backgroundColor = Color(0xFFF5F7FA);
-  static const cardColor = Colors.white;
-  static const surfaceColor = Color(0xFFF8FAFB);
+  // Fondos - Modo Claro
+  static const lightBackground = Color(0xFFF5F7FA);
+  static const lightCard = Colors.white;
+  static const lightSurface = Color(0xFFF8FAFB);
   
-  // Textos
-  static const textPrimary = Color(0xFF1A2332);
-  static const textSecondary = Color(0xFF546E7A);
-  static const textHint = Color(0xFF90A4AE);
+  // Textos - Modo Claro
+  static const lightTextPrimary = Color(0xFF1A2332);
+  static const lightTextSecondary = Color(0xFF546E7A);
   
-  // Estados
+  // Fondos - Modo Oscuro
+  static const darkBackground = Color(0xFF121212);
+  static const darkCard = Color(0xFF1E1E1E);
+  static const darkSurface = Color(0xFF2C2C2C);
+  
+  // Textos - Modo Oscuro
+  static const darkTextPrimary = Color(0xFFE8EAED);
+  static const darkTextSecondary = Color(0xFF9AA0A6);
+  
+  // Estados (compartidos)
   static const successColor = Color(0xFF4CAF50);
   static const errorColor = Color(0xFFE53935);
   static const warningColor = Color(0xFFFFA726);
   static const infoColor = Color(0xFF42A5F5);
   
-  // Gradientes
-  static const gradientStart = primaryColor;
-  static const gradientEnd = secondaryColor;
-  
   // Sombras
-  static Color shadowColor = Colors.black.withOpacity(0.08);
-  static Color shadowColorDark = Colors.black.withOpacity(0.15);
+  static Color shadowColorLight = Colors.black.withOpacity(0.08);
+  static Color shadowColorDark = Colors.black.withOpacity(0.3);
 }
