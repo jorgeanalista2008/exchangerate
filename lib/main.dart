@@ -4,6 +4,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'core/theme_provider.dart';
 import 'core/app_theme.dart';
 import 'pages/loading_page.dart';
+import 'pages/lock_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +31,10 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: themeProvider.themeMode,
-          home: const LoadingPage(),
+          home: const LockScreen(
+            requireAuth: true,
+            child: LoadingPage(),
+          ),
         );
       },
     );

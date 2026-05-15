@@ -7,7 +7,9 @@ import '../molecules/rate_card.dart';
 import '../molecules/calculator_widget.dart';
 import '../molecules/power_quote_widget.dart';
 import 'finance_page.dart';
-
+import 'alert_page.dart';
+import 'widget_page.dart ';
+import 'security_page.dart';
 class HomePage extends StatelessWidget {
   final Map<String, DolarModel> rates;
 
@@ -43,7 +45,37 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ),
-        actions: [
+           actions: [
+            IconButton(
+              icon: const Icon(Icons.security),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SecurityPage()),
+                );
+              },
+              tooltip: 'Seguridad',
+            ),
+              IconButton(
+              icon: const Icon(Icons.widgets_outlined),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const WidgetPage()),
+                );
+              },
+              tooltip: 'Pantalla de Inicio',
+            ),
+            IconButton(
+              icon: const Icon(Icons.notifications_outlined),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AlertPage()),
+                );
+              },
+              tooltip: 'Alertas de precio',
+            ),
            IconButton(
               icon: const Icon(Icons.account_balance_wallet),
               onPressed: () {
