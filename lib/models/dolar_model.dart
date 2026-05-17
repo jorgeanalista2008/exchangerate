@@ -13,8 +13,8 @@ class DolarModel {
 
   factory DolarModel.fromJson(Map<String, dynamic> json) {
     return DolarModel(
-      fuente: json['fuente'] ?? '',
-      nombre: json['nombre'] ?? '',
+      fuente: json['fuente'] ?? 'Sin datos',
+      nombre: json['nombre'] ?? 'Sin datos',
       promedio: (json['promedio'] ?? 0).toDouble(),
       // Intentamos parsear la fecha si existe
       fechaActualizacion: json['fechaActualizacion'] != null 

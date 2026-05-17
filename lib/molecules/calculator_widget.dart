@@ -19,7 +19,7 @@ class CalculatorWidget extends StatefulWidget {
 
 class _CalculatorWidgetState extends State<CalculatorWidget> {
   final _controller = TextEditingController();
-  String _selectedCurrency = 'paralelo';
+  String _selectedCurrency = 'oficial';
   double _result = 0;
   bool _isReversed = false;
 
@@ -89,37 +89,7 @@ class _CalculatorWidgetState extends State<CalculatorWidget> {
           ),
           child: Row(
             children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _selectedCurrency = 'paralelo';
-                      _calculate();
-                    });
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    decoration: BoxDecoration(
-                      color: _selectedCurrency == 'paralelo'
-                          ? AppColors.primaryColor
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      'Paralelo',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: _selectedCurrency == 'paralelo'
-                            ? Colors.white
-                            : textSecondary,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+           
               Expanded(
                 child: GestureDetector(
                   onTap: () {
@@ -142,6 +112,37 @@ class _CalculatorWidgetState extends State<CalculatorWidget> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: _selectedCurrency == 'oficial'
+                            ? Colors.white
+                            : textSecondary,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+                 Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _selectedCurrency = 'paralelo';
+                      _calculate();
+                    });
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    decoration: BoxDecoration(
+                      color: _selectedCurrency == 'paralelo'
+                          ? AppColors.primaryColor
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      'Otra tasa',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: _selectedCurrency == 'paralelo'
                             ? Colors.white
                             : textSecondary,
                         fontWeight: FontWeight.w600,

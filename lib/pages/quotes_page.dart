@@ -5,17 +5,17 @@ import '../core/app_colors.dart';
 import '../core/theme_provider.dart';
 import '../models/quote_model.dart';
 
-class PowerQuoteWidget extends StatefulWidget {
-  const PowerQuoteWidget({super.key});
+class QuotesPage extends StatefulWidget {
+  const QuotesPage({super.key});
 
   @override
-  State<PowerQuoteWidget> createState() => _PowerQuoteWidgetState();
+  State<QuotesPage> createState() => _QuotesPageState();
 }
 
-class _PowerQuoteWidgetState extends State<PowerQuoteWidget>
+class _QuotesPageState extends State<QuotesPage>
     with SingleTickerProviderStateMixin {
   
-  final List<Quote> quotes = [
+   final List<Quote> quotes = [
       // Las 48 Leyes del Poder - Robert Greene (completas)
     const Quote(texto: "Nunca le hagas sombra a tu superior.", autor: "Robert Greene", libro: "Las 48 Leyes del Poder - Ley 1"),
     const Quote(texto: "Nunca confíes demasiado en tus amigos; aprende a utilizar a tus enemigos.", autor: "Robert Greene", libro: "Las 48 Leyes del Poder - Ley 2"),
@@ -213,21 +213,14 @@ class _PowerQuoteWidgetState extends State<PowerQuoteWidget>
   @override
   void initState() {
     super.initState();
-    
     _currentIndex = _random.nextInt(quotes.length);
-    
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
     );
-
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeIn,
-      ),
+      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
     );
-
     _animationController.forward();
   }
 
@@ -238,7 +231,6 @@ class _PowerQuoteWidgetState extends State<PowerQuoteWidget>
         do {
           newIndex = _random.nextInt(quotes.length);
         } while (newIndex == _currentIndex && quotes.length > 1);
-        
         _currentIndex = newIndex;
       });
       _animationController.forward();
@@ -257,196 +249,116 @@ class _PowerQuoteWidgetState extends State<PowerQuoteWidget>
     final textPrimary = isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary;
     final textSecondary = isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
     final quote = quotes[_currentIndex];
-    
-    return GestureDetector(
-      onTap: _nextQuote,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        width: double.infinity,
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: isDark
-                ? [
-                    AppColors.primaryColor.withOpacity(0.15),
-                    AppColors.secondaryColor.withOpacity(0.05),
-                  ]
-                : [
-                    AppColors.primaryColor.withOpacity(0.08),
-                    AppColors.secondaryColor.withOpacity(0.03),
-                  ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: AppColors.primaryColor.withOpacity(isDark ? 0.3 : 0.15),
-            width: 1,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primaryColor.withOpacity(isDark ? 0.1 : 0.05),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Frases & Reflexiones'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: isDark
+                  ? [AppColors.darkSurface, AppColors.darkSurface]
+                  : [AppColors.primaryColor, AppColors.secondaryColor],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-          ],
+          ),
         ),
-        child: FadeTransition(
-          opacity: _fadeAnimation,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Encabezado
-              Row(
+      ),
+      body: GestureDetector(
+        onTap: _nextQuote,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // Icono
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryColor.withOpacity(isDark ? 0.2 : 0.12),
-                      borderRadius: BorderRadius.circular(10),
+                      color: AppColors.primaryColor.withOpacity(0.1),
+                      shape: BoxShape.circle,
                     ),
                     child: Icon(
                       Icons.format_quote,
-                      color: isDark ? const Color(0xFF4DB6AC) : AppColors.primaryColor,
-                      size: 20,
+                      size: 50,
+                      color: AppColors.primaryColor,
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      quote.autor,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                        color: textPrimary,
-                      ),
-                    ),
-                  ),
-                  // Badge del libro
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor.withOpacity(isDark ? 0.2 : 0.1),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: AppColors.primaryColor.withOpacity(0.2),
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.menu_book,
-                          size: 14,
-                          color: isDark ? const Color(0xFF4DB6AC) : AppColors.primaryColor,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          quote.libro.length > 20 
-                              ? '${quote.libro.substring(0, 20)}...' 
-                              : quote.libro,
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                            color: isDark ? const Color(0xFF4DB6AC) : AppColors.primaryColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 16),
-              
-              // Línea decorativa
-              Container(
-                height: 1,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.primaryColor.withOpacity(0.0),
-                      AppColors.primaryColor.withOpacity(isDark ? 0.3 : 0.15),
-                      AppColors.primaryColor.withOpacity(0.0),
-                    ],
-                  ),
-                ),
-              ),
-              
-              const SizedBox(height: 14),
-              
-              // Frase con comillas
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                  
+                  const SizedBox(height: 30),
+                  
+                  // Frase
                   Text(
-                    '"',
+                    '"${quote.texto}"',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 40,
-                      color: AppColors.primaryColor.withOpacity(0.5),
-                      height: 1,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Text(
-                        quote.texto,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontStyle: FontStyle.italic,
-                          color: textSecondary,
-                          height: 1.5,
-                          letterSpacing: 0.3,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 10),
-              
-              // Autor
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  '— ${quote.autor}',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-              ),
-              
-              const SizedBox(height: 10),
-              
-              // Indicador
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.touch_app_outlined,
-                    size: 13,
-                    color: isDark ? Colors.grey[500] : Colors.grey[400],
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    "Toca para descubrir otra frase",
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: isDark ? Colors.grey[500] : Colors.grey[400],
+                      fontSize: 20,
+                      fontStyle: FontStyle.italic,
+                      color: textPrimary,
+                      height: 1.5,
                       letterSpacing: 0.3,
                     ),
                   ),
+                  
+                  const SizedBox(height: 20),
+                  
+                  // Autor
+                  Text(
+                    '— ${quote.autor}',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 6),
+                  
+                  // Libro
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      quote.libro,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 40),
+                  
+                  // Indicador
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.touch_app_outlined, size: 16, color: Colors.grey[400]),
+                      const SizedBox(width: 6),
+                      Text(
+                        'Toca para otra frase',
+                        style: TextStyle(fontSize: 13, color: Colors.grey[400]),
+                      ),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 20),
+                  
+                  // Contador
+                  Text(
+                    '${_currentIndex + 1} de ${quotes.length}',
+                    style: TextStyle(fontSize: 11, color: Colors.grey[500]),
+                  ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),

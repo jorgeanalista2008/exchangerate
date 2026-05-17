@@ -7,11 +7,13 @@ import '../models/dolar_model.dart';
 class RateCard extends StatelessWidget {
   final DolarModel dolar;
   final Color color;
+  final String? label;  // ← AGREGAR ESTO
 
   const RateCard({
     super.key,
     required this.dolar,
     required this.color,
+    this.label,  // ← AGREGAR ESTO
   });
 
   @override
@@ -47,7 +49,7 @@ class RateCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
-                  dolar.fuente == 'oficial' 
+                  dolar.fuente == 'bcv' || dolar.fuente == 'oficial'
                       ? Icons.account_balance 
                       : Icons.trending_up,
                   color: color,
@@ -57,7 +59,7 @@ class RateCard extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  dolar.nombre,
+                  label ?? (dolar.fuente == 'oficial' || dolar.fuente == 'bcv' ? 'BCV' : 'Otra Tasa'),  // ← USAR label
                   style: TextStyle(
                     fontSize: 13,
                     color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
@@ -90,7 +92,10 @@ class RateCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              dolar.fuente == 'oficial' ? 'Oficial' : 'USDT',
+              // CAMBIO AQUÍ: BCV u Otra Tasa
+              dolar.fuente == 'oficial' || dolar.fuente == 'bcv' 
+                  ? 'BCV' 
+                  : 'Otra Tasa',
               style: TextStyle(
                 fontSize: 11,
                 color: color,
