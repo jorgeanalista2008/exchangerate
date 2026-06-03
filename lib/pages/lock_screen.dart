@@ -47,7 +47,7 @@ class _LockScreenState extends State<LockScreen> with WidgetsBindingObserver {
     }
   }
 
-  Future<void> _checkAuth() async {
+ Future<void> _checkAuth() async {
     setState(() => _isLoading = true);
     
     final lockEnabled = await _auth.isLockEnabled();
@@ -57,11 +57,13 @@ class _LockScreenState extends State<LockScreen> with WidgetsBindingObserver {
       _hasBiometrics = hasBio;
       _isLoading = false;
       
+      // CORREGIDO: Solo bloquear si el bloqueo está activado
       if (!lockEnabled || !widget.requireAuth) {
         _isLocked = false;
       }
     });
     
+    // Solo autenticar si el bloqueo está activado
     if (lockEnabled && widget.requireAuth) {
       _authenticate();
     }
@@ -107,6 +109,12 @@ Future<void> _authenticate() async {
         body: Center(child: CircularProgressIndicator()),
       );
     }
+
+     // Si no está bloqueado, mostrar la app directamente
+    if (!_isLocked) {
+      return widget.child;
+    }
+
 
     if (_isLocked) {
       return Scaffold(
