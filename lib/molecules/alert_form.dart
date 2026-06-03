@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../core/app_colors.dart';
 import '../models/alert_model.dart';
 
@@ -14,6 +15,20 @@ class AlertForm extends StatefulWidget {
 class _AlertFormState extends State<AlertForm> {
   final _formKey = GlobalKey<FormState>();
   final _precioController = TextEditingController();
+  
+  @override
+  void initState() {
+    super.initState();
+    _requestNotificationPermission();
+  }
+
+  Future<void> _requestNotificationPermission() async {
+    final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestNotificationsPermission();
+  }
   
   String _moneda = 'paralelo';
   bool _esMayor = true;

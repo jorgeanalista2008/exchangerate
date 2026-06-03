@@ -19,10 +19,14 @@ import '../molecules/alert_form.dart';
 
 class HomePage extends StatefulWidget {
   final Map<String, DolarModel> rates;
+  final bool isOffline;
+  final DateTime? cacheTimestamp;
 
   const HomePage({
     super.key,
     required this.rates,
+    this.isOffline = false,
+    this.cacheTimestamp,
   });
 
   @override
@@ -84,6 +88,52 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (widget.isOffline) ...[
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                margin: const EdgeInsets.only(bottom: 16),
+                decoration: BoxDecoration(
+                  color: Colors.amber.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Colors.amber.withOpacity(0.4),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.wifi_off, color: Colors.amber, size: 20),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Modo Offline",
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.amber,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            widget.cacheTimestamp != null
+                                ? "Tasas actualizadas por última vez: ${DateFormat('dd/MM/yyyy HH:mm').format(widget.cacheTimestamp!)}"
+                                : "Mostrando tasas guardadas en caché.",
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
             // Encabezado de bienvenida
             Container(
               width: double.infinity,

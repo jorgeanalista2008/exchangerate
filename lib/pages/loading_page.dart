@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../core/app_colors.dart';
 import '../models/dolar_model.dart';
 import 'home_page.dart';
@@ -59,6 +60,15 @@ class _LoadingPageState extends State<LoadingPage>
       ).timeout(const Duration(seconds: 10));
 
       if (response.statusCode == 200) {
+        // Guardar en caché
+        try {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('cached_rates_json', response.body);
+          await prefs.setString('cached_rates_time', DateTime.now().toIso8601String());
+        } catch (e) {
+          // Ignorar fallo al guardar caché
+        }
+
         List<dynamic> jsonList = jsonDecode(response.body);
         Map<String, DolarModel> loadedRates = {};
         
@@ -90,11 +100,61 @@ class _LoadingPageState extends State<LoadingPage>
           );
         }
       } else {
-        _showError('Error al cargar las tasas.\nCódigo: ${response.statusCode}');
+        await _tryLoadFromCacheOrShowError('Error al cargar las tasas.\nCódigo: ${response.statusCode}');
       }
     } catch (e) {
-      _showError('Sin conexión a internet.\nVerifica tu conexión e intenta de nuevo.');
+      await _tryLoadFromCacheOrShowError('Sin conexión a internet.\nVerifica tu conexión e intenta de nuevo.');
     }
+  }
+
+  Future<void> _tryLoadFromCacheOrShowError(String defaultError) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final cachedJson = prefs.getString('cached_rates_json');
+      final cachedTimeStr = prefs.getString('cached_rates_time');
+      
+      if (cachedJson != null && cachedTimeStr != null) {
+        List<dynamic> jsonList = jsonDecode(cachedJson);
+        Map<String, DolarModel> loadedRates = {};
+        
+        for (var item in jsonList) {
+          if (item['fuente'] == 'paralelo') {
+            item['nombre'] = 'Otra Tasa';
+          }
+          if (item['fuente'] == 'oficial') {
+            item['nombre'] = 'BCV';
+          }
+          loadedRates[item['fuente']] = DolarModel.fromJson(item);
+        }
+        
+        final cacheTimestamp = DateTime.tryParse(cachedTimeStr) ?? DateTime.now();
+        
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) => 
+                HomePage(
+                  rates: loadedRates,
+                  isOffline: true,
+                  cacheTimestamp: cacheTimestamp,
+                ),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+              transitionDuration: const Duration(milliseconds: 600),
+            ),
+          );
+        }
+        return;
+      }
+    } catch (e) {
+      // Ignorar error al cargar caché
+    }
+    _showError(defaultError);
   }
 
   void _showError(String message) {
